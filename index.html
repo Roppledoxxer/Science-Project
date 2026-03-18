@@ -44,6 +44,26 @@ font-size:1.1em;
 color:#b0b0b0;
 }
 
+.site-header{
+  background:rgba(17,17,17,0.95);
+  padding:40px 30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:20px;
+  text-align:left;
+  border-bottom:3px solid #00e1ff;
+  box-shadow:0 4px 15px rgba(0,225,255,0.1);
+  flex-wrap:wrap;
+}
+
+.logo{
+  width:70px;
+  height:70px;
+  object-fit:contain;
+  filter: drop-shadow(0 0 10px #00e1ff);
+}
+
 nav{
 background:rgba(26,26,26,0.98);
 display:flex;
@@ -360,11 +380,14 @@ font-size:0.95em;
 
 <body>
 
-<header>
-<h1>Science Project Website</h1>
-<p>Explore Exothermic and Endothermic Reactions</p>
+<header class="site-header">
+  <img src="f7d56071-5fe8-476a-a28e-cdc1f3d6bda5.png" alt="Logo" class="logo">
+  
+  <div>
+    <h1>Science Project Website</h1>
+    <p>Explore Exothermic and Endothermic Reactions</p>
+  </div>
 </header>
-
 <nav>
 <button onclick="showPage('home')">Home</button>
 <button onclick="showPage('learn')">Learn</button>
@@ -759,4 +782,4 @@ loadQuestion()
 </script>
 
 </body>
-</html>
+</html>F
