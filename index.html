@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Science Project</title>
+
+<style>
+
+/* GLOBAL */
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:'Segoe UI', Arial, sans-serif;
+background:linear-gradient(135deg,#0f2027 0%,#203a43 50%,#2c5364 100%);
+color:#f0f0f0;
+line-height:1.6;
+}
+
+header{
+background:rgba(17,17,17,0.95);
+padding:50px 30px;
+text-align:center;
+border-bottom:3px solid #00e1ff;
+box-shadow:0 4px 15px rgba(0,225,255,0.1);
+}
+
+header h1{
+margin:0;
+font-size:2.5em;
+font-weight:600;
+letter-spacing:1px;
+color:#00e1ff;
+}
+
+header p{
+margin:10px 0 0 0;
+font-size:1.1em;
+color:#b0b0b0;
+}
+
+nav{
+background:rgba(26,26,26,0.98);
+display:flex;
+justify-content:center;
+gap:30px;
+padding:20px;
+flex-wrap:wrap;
+box-shadow:0 2px 10px rgba(0,0,0,0.3);
+}
+
+nav button{
+background:none;
+border:2px solid transparent;
+color:#00e1ff;
+font-size:16px;
+font-weight:500;
+cursor:pointer;
+padding:8px 16px;
+border-radius:6px;
+transition:all 0.3s ease;
+}
+
+nav button:hover{
+border-color:#00e1ff;
+background:rgba(0,225,255,0.1);
+transform:translateY(-2px);
+}
+
+section{
+display:none;
+padding:60px 40px;
+max-width:1200px;
+margin:40px auto;
+background:rgba(28,28,28,0.8);
+border-radius:15px;
+box-shadow:0 8px 32px rgba(0,225,255,0.1);
+backdrop-filter:blur(10px);
+}
+
+.active{
+display:block;
+animation:slideIn 0.4s ease;
+}
+
+@keyframes slideIn{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+section h2{
+color:#00e1ff;
+font-size:2em;
+margin-top:0;
+margin-bottom:30px;
+border-bottom:2px solid #00e1ff;
+padding-bottom:15px;
+}
+
+section p{
+font-size:1.05em;
+line-height:1.8;
+color:#e0e0e0;
+}
+
+section ul{
+font-size:1.05em;
+line-height:2;
+color:#e0e0e0;
+}
+
+section ul li{
+margin:8px 0;
+}
+
+/* CARDS */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:30px;
+margin:30px 0;
+}
+
+.card{
+background:rgba(45,45,45,0.9);
+padding:30px;
+border-radius:12px;
+border-left:4px solid #00e1ff;
+box-shadow:0 8px 25px rgba(0,225,255,0.1);
+transition:all 0.3s ease;
+}
+
+.card:hover{
+transform:translateY(-5px);
+box-shadow:0 12px 35px rgba(0,225,255,0.2);
+}
+
+.card h3{
+color:#00e1ff;
+font-size:1.3em;
+margin-top:0;
+}
+
+.card p{
+color:#d0d0d0;
+font-size:1em;
+}
+
+/* THERMOMETER */
+
+.thermo{
+width:100px;
+height:350px;
+background:rgba(51,51,51,0.9);
+margin:30px auto;
+border-radius:50px;
+overflow:hidden;
+position:relative;
+box-shadow:0 8px 20px rgba(0,0,0,0.3);
+border:3px solid #00e1ff;
+}
+
+.level{
+position:absolute;
+bottom:0;
+width:100%;
+height:40%;
+background:linear-gradient(180deg,#ff6b6b,#ee5a6f);
+transition:height 0.8s ease;
+box-shadow:0 0 15px rgba(255,107,107,0.5);
+}
+
+/* BUTTONS */
+
+button.action{
+padding:14px 28px;
+margin:12px;
+background:linear-gradient(135deg,#00e1ff,#00d1e8);
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-weight:600;
+font-size:1em;
+color:#0f2027;
+transition:all 0.3s ease;
+box-shadow:0 4px 15px rgba(0,225,255,0.3);
+}
+
+button.action:hover{
+transform:translateY(-3px);
+box-shadow:0 6px 25px rgba(0,225,255,0.5);
+}
+
+button.action:active{
+transform:translateY(-1px);
+}
+
+/* CANVAS */
+
+canvas{
+background:rgba(17,17,17,0.9);
+border-radius:12px;
+border:2px solid #00e1ff;
+width:100%;
+max-width:900px;
+display:block;
+margin:20px auto;
+box-shadow:0 8px 20px rgba(0,225,255,0.15);
+}
+
+/* QUIZ */
+
+.answer{
+background:rgba(34,34,34,0.9);
+padding:16px;
+margin:15px 0;
+cursor:pointer;
+border-radius:8px;
+border:2px solid transparent;
+transition:all 0.3s ease;
+font-size:1.05em;
+color:#e0e0e0;
+}
+
+.answer:hover{
+background:rgba(51,51,51,0.9);
+border-color:#00e1ff;
+transform:translateX(5px);
+}
+
+.correct{
+background:#2ecc71 !important;
+color:#fff !important;
+border-color:#27ae60 !important;
+font-weight:600;
+}
+
+.wrong{
+background:#e74c3c !important;
+color:#fff !important;
+border-color:#c0392b !important;
+font-weight:600;
+}
+
+/* SLIDERS */
+
+label{
+display:block;
+margin-top:25px;
+margin-bottom:10px;
+font-weight:600;
+color:#00e1ff;
+font-size:1.05em;
+}
+
+input[type=range]{
+width:100%;
+margin:15px 0 30px 0;
+height:6px;
+border-radius:3px;
+background:rgba(51,51,51,0.9);
+outline:none;
+-webkit-appearance:none;
+}
+
+input[type=range]::-webkit-slider-thumb{
+-webkit-appearance:none;
+appearance:none;
+width:20px;
+height:20px;
+border-radius:50%;
+background:linear-gradient(135deg,#00e1ff,#00d1e8);
+cursor:pointer;
+box-shadow:0 0 10px rgba(0,225,255,0.5);
+transition:all 0.2s ease;
+}
+
+input[type=range]::-webkit-slider-thumb:hover{
+width:24px;
+height:24px;
+box-shadow:0 0 20px rgba(0,225,255,0.8);
+}
+
+input[type=range]::-moz-range-thumb{
+width:20px;
+height:20px;
+border-radius:50%;
+background:linear-gradient(135deg,#00e1ff,#00d1e8);
+cursor:pointer;
+border:none;
+box-shadow:0 0 10px rgba(0,225,255,0.5);
+transition:all 0.2s ease;
+}
+
+input[type=range]::-moz-range-thumb:hover{
+width:24px;
+height:24px;
+box-shadow:0 0 20px rgba(0,225,255,0.8);
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:30px;
+background:rgba(17,17,17,0.95);
+color:#888;
+border-top:2px solid #00e1ff;
+margin-top:40px;
+}
+
+footer p{
+margin:0;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+header h1{
+font-size:1.8em;
+}
+
+section{
+padding:40px 20px;
+}
+
+nav{
+gap:10px;
+}
+
+nav button{
+padding:6px 12px;
+font-size:14px;
+}
+
+.grid{
+grid-template-columns:1fr;
+}
+
+button.action{
+padding:12px 20px;
+font-size:0.95em;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Science Project Website</h1>
+<p>Explore Exothermic and Endothermic Reactions</p>
+</header>
+
+<nav>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('learn')">Learn</button>
+<button onclick="showPage('sim')">Simulation</button>
+<button onclick="showPage('graph')">Energy Graph</button>
+<button onclick="showPage('particles')">Particle Lab</button>
+<button onclick="showPage('quiz')">Quiz</button>
+</nav>
+
+<!-- HOME -->
+
+<section id="home" class="active">
+
+<h2>Welcome to the LAB OF EXOTHERMIC AND ENDOTHERMIC REACTION</h2>
+
+<p>
+This website shows you endothermic reactions and exothermic reactions, as well as temperature and particle simulations.
+</p>
+
+<ul>
+<li>Exothermic reactions release heat</li>
+<li>Endothermic reactions absorb heat</li>
+<li>Energy diagrams show energy change</li>
+<li>Simulations show temperature effects</li>
+</ul>
+
+</section>
+
+<!-- LEARN -->
+
+<section id="learn">
+
+<h2>Thermochemistry Notes</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>Exothermic Reactions</h3>
+<p>
+Exothermic reactions release heat energy and it can make the surroundings warmer.
+</p>
+
+<ul>
+<li>Combustion</li>
+<li>Neutralization</li>
+<li>Freezing</li>
+</ul>
+
+<p>
+The energy of products are lower than reactants.
+</p>
+</div>
+
+<div class="card">
+<h3>Endothermic Reactions</h3>
+<p>
+Endothermic Reactions absorb energy from the surroundings and makes the surroundings cooler.
+</p>
+
+<ul>
+<li>Photosynthesis</li>
+<li>Thermal decomposition</li>
+<li>Melting</li>
+</ul>
+
+<p>
+The energy of products are higher than reactants.
+</p>
+</div>
+
+<div class="card">
+<h3>Activation Energy</h3>
+<p>
+Activation Energy is the energy needed for a reaction to start.
+</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- SIMULATION -->
+
+<section id="sim">
+
+<h2>Reaction Temperature Simulator</h2>
+
+<div class="thermo">
+<div class="level" id="tempLevel"></div>
+</div>
+
+<h3 id="tempText" style="text-align:center;color:#00e1ff;">Temperature: 25°C</h3>
+
+<div style="text-align:center;">
+<button class="action" onclick="exo()">Exothermic Reaction</button>
+<button class="action" onclick="endo()">Endothermic Reaction</button>
+<button class="action" onclick="resetTemp()">Reset</button>
+</div>
+
+</section>
+
+<!-- ENERGY GRAPH -->
+
+<section id="graph">
+
+<h2>Energy Diagram Generator</h2>
+
+<canvas id="energyCanvas" width="900" height="400"></canvas>
+
+<label>Activation Energy</label>
+<input type="range" id="actSlider" min="10" max="200" value="80">
+
+<label>Product Energy</label>
+<input type="range" id="prodSlider" min="50" max="350" value="200">
+
+</section>
+
+<!-- PARTICLE LAB -->
+
+<section id="particles">
+
+<h2>Particle Reaction Simulator</h2>
+
+<canvas id="particleCanvas" width="900" height="400"></canvas>
+
+<h3 id="labTemp" style="text-align:center;color:#00e1ff;">Temperature: 25°C</h3>
+
+<div style="text-align:center;">
+<button class="action" onclick="addParticles()">Add Molecules</button>
+<button class="action" onclick="increaseSpeed()">Increase Temperature</button>
+<button class="action" onclick="resetLab()">Reset</button>
+</div>
+
+</section>
+
+<!-- QUIZ -->
+
+<section id="quiz">
+
+<h2>Thermochemistry Quiz</h2>
+
+<h3 id="question" style="color:#00e1ff;"></h3>
+
+<div id="answers"></div>
+
+<h3 id="score" style="color:#00e1ff;">Score: 0</h3>
+
+</section>
+
+<footer>
+<p>© Matthias Rong. All Rights Reserved.</p>
+</footer>
+
+<script>
+
+/* PAGE SYSTEM */
+
+function showPage(id){
+
+document.querySelectorAll("section").forEach(sec=>{
+sec.classList.remove("active")
+})
+
+document.getElementById(id).classList.add("active")
+
+}
+
+/* TEMPERATURE SIM */
+
+let temp=25
+
+function updateTemp(){
+
+const level=document.getElementById("tempLevel")
+const text=document.getElementById("tempText")
+
+level.style.height=(temp*2)+"px"
+text.innerText="Temperature: "+temp+"°C"
+
+}
+
+function exo(){
+
+temp+=20
+updateTemp()
+
+}
+
+function endo(){
+
+temp-=15
+updateTemp()
+
+}
+
+function resetTemp(){
+
+temp=25
+updateTemp()
+
+}
+
+updateTemp()
+
+/* ENERGY GRAPH */
+
+const canvas=document.getElementById("energyCanvas")
+const ctx=canvas.getContext("2d")
+
+const act=document.getElementById("actSlider")
+const prod=document.getElementById("prodSlider")
+
+function drawEnergy(){
+
+ctx.clearRect(0,0,900,400)
+
+ctx.beginPath()
+
+ctx.moveTo(50,300)
+
+ctx.quadraticCurveTo(300,300-act.value,450,200)
+
+ctx.quadraticCurveTo(650,prod.value,850,250)
+
+ctx.strokeStyle="#00e1ff"
+ctx.lineWidth=3
+ctx.stroke()
+
+}
+
+act.oninput=drawEnergy
+prod.oninput=drawEnergy
+
+drawEnergy()
+
+/* PARTICLE LAB WITH TEMPERATURE + SPEED */
+
+const pCanvas = document.getElementById("particleCanvas")
+const pCtx = pCanvas.getContext("2d")
+
+let particles=[]
+let speedMultiplier=1
+let labTemp=25
+
+function updateLabTemp(){
+document.getElementById("labTemp").innerText="Temperature: "+labTemp+"°C"
+}
+
+function addParticles(){
+
+for(let i=0;i<10;i++){
+
+particles.push({
+
+x:Math.random()*900,
+y:Math.random()*400,
+vx:(Math.random()-0.5)*4,
+vy:(Math.random()-0.5)*4
+
+})
+
+}
+
+}
+
+function increaseSpeed(){
+
+speedMultiplier+=0.5
+labTemp+=5
+
+updateLabTemp()
+
+}
+
+function resetLab(){
+
+particles=[]
+speedMultiplier=1
+labTemp=25
+updateLabTemp()
+
+}
+
+function updateParticles(){
+
+pCtx.clearRect(0,0,900,400)
+
+particles.forEach(p=>{
+
+p.x+=p.vx*speedMultiplier
+p.y+=p.vy*speedMultiplier
+
+if(p.x<0||p.x>900) p.vx*=-1
+if(p.y<0||p.y>400) p.vy*=-1
+
+pCtx.beginPath()
+pCtx.arc(p.x,p.y,6,0,Math.PI*2)
+pCtx.fillStyle="orange"
+pCtx.fill()
+
+})
+
+requestAnimationFrame(updateParticles)
+
+}
+
+updateParticles()
+updateLabTemp()
+
+/* QUIZ */
+
+const questions=[
+
+{
+q:"Which reaction releases heat?",
+a:["Endothermic","Exothermic"],
+c:1
+},
+
+{
+q:"Photosynthesis is?",
+a:["Endothermic","Exothermic"],
+c:0
+},
+
+{
+q:"Combustion is?",
+a:["Exothermic","Endothermic"],
+c:0
+}
+
+]
+
+let current=0
+let score=0
+
+function loadQuestion(){
+
+const q=questions[current]
+
+document.getElementById("question").innerText=q.q
+
+let html=""
+
+q.a.forEach((ans,i)=>{
+
+html+=`<div class="answer" onclick="selectAnswer(${i})">${ans}</div>`
+
+})
+
+document.getElementById("answers").innerHTML=html
+
+}
+
+function selectAnswer(i){
+
+const q=questions[current]
+
+const boxes=document.querySelectorAll(".answer")
+
+if(i==q.c){
+
+boxes[i].classList.add("correct")
+score++
+
+}else{
+
+boxes[i].classList.add("wrong")
+boxes[q.c].classList.add("correct")
+
+}
+
+document.getElementById("score").innerText="Score: "+score
+
+setTimeout(()=>{
+
+current++
+
+if(current<questions.length){
+loadQuestion()
+}else{
+document.getElementById("question").innerText="Quiz Complete! Refresh Page to take it again."
+document.getElementById("answers").innerHTML=""
+}
+
+},1200)
+
+}
+
+loadQuestion()
+
+</script>
+
+</body>
+</html>
